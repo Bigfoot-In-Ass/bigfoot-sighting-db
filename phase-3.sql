@@ -1,0 +1,39 @@
+DROP SCHEMA IF EXISTS SIGHTINGS CASCADE;
+CREATE SCHEMA IF NOT EXISTS SIGHTINGS;
+
+SET SEARCH_PATH TO SIGHTINGS, PUBLIC;
+
+CREATE TABLE SOURCE (
+    Source_ID SERIAL PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    URL VARCHAR(255) 
+        CHECK (URL ~* '^(https?://)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(/.*)?$'),
+    Issue VARCHAR(25)
+);
+
+CREATE TABLE REPORT (
+    Report_ID SERIAL PRIMARY KEY,
+    Report_Type VARCHAR(50) NOT NULL,
+    Headline VARCHAR(255),
+    Submitted_Date DATE NOT NULL,
+    Author VARCHAR(50) NOT NULL,
+    Source_ID INT NOT NULL,
+    FOREIGN KEY (Source_ID) REFERENCES SOURCE(Source_ID) ON DELETE CASCADE
+);
+
+CREATE TABLE INVESTIGATOR (
+    Investigator_ID SERIAL PRIMARY KEY,
+    Investigator_Name VARCHAR(50) NOT NULL,
+    Title VARCHAR(50),
+    Organization VARCHAR(100)
+);
+
+CREATE TABLE FOLLOW_UP (
+    Report_ID INT NOT NULL,
+    Investigator_ID INT NOT NULL,
+    Follow_Up_Date DATE NOT NULL,
+    Notes TEXT,
+    PRIMARY KEY (Report_ID, Investigator_ID, Follow_Up_Date),
+    FOREIGN KEY (Report_ID) REFERENCES REPORT(Report_ID) ON DELETE CASCADE,
+    FOREIGN KEY (Investigator_ID) REFERENCES INVESTIGATOR(Investigator_ID) ON DELETE CASCADE
+)
