@@ -68,7 +68,7 @@ CREATE TABLE EVENT (
     Event_Type VARCHAR(50) NOT NULL 
         CHECK (Event_Type IN ('Class A', 'Class B', 'Class C')),
     -- may need to process this into a concatenated string
-    Observerd_Description TEXT,
+    Observed_Description TEXT,
     Other_Witnesses TEXT,
     Witness_other_stories TEXT,
     Also_Noticed TEXT,
