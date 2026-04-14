@@ -24,7 +24,7 @@ CREATE TABLE REPORT (
 CREATE TABLE INVESTIGATOR (
     Investigator_ID SERIAL PRIMARY KEY,
     Investigator_Name VARCHAR(50) NOT NULL,
-    Title VARCHAR(50),
+    Title VARCHAR(50) NOT NULL,
     Organization VARCHAR(100)
 );
 
@@ -40,13 +40,8 @@ CREATE TABLE FOLLOW_UP (
 
 CREATE TABLE ENVIRONMENT (
     Environment_ID SERIAL PRIMARY KEY,
-    -- may need to process this into a concatenated string
     Environment_Description TEXT,
-    -- Environment_Details TEXT,
     Season VARCHAR(20),
-    -- May need to group date and time information into a single column
-    -- Date DATE,
-    -- process each date using the information in the report
     Year INT CHECK (Year <= EXTRACT(YEAR FROM CURRENT_DATE)),
     Month INT CHECK (Month >= 1 AND Month <= 12),
     Date_Text VARCHAR(20),
@@ -55,8 +50,8 @@ CREATE TABLE ENVIRONMENT (
 
 CREATE TABLE LOCATION (
     Location_ID SERIAL PRIMARY KEY,
-    State VARCHAR(50),
-    County VARCHAR(50),
+    State VARCHAR(50) NOT NULL,
+    County VARCHAR(50) NOT NULL,
     Nearest_Town VARCHAR(50),
     Nearest_Road VARCHAR(50),
     Location_Details TEXT,
@@ -67,7 +62,6 @@ CREATE TABLE EVENT (
     Event_ID SERIAL PRIMARY KEY,
     Event_Type VARCHAR(50) NOT NULL 
         CHECK (Event_Type IN ('Class A', 'Class B', 'Class C')),
-    -- may need to process this into a concatenated string
     Observed_Description TEXT,
     Other_Witnesses TEXT,
     Witness_other_stories TEXT,
